@@ -594,7 +594,7 @@ class PrivateMethods(Authentication):
         return response
 
     @http_exception_handler
-    def synch_digital_currency_deposit_address_with_blockchain(self, deposit_address):
+    def synch_digital_currency_deposit_address_with_blockchain(self, deposit_address, primary_currency_code="Xbt"):
         """
         Forces the deposit address to be checked for new Bitcoin or Ether deposits.
 
@@ -614,7 +614,8 @@ class PrivateMethods(Authentication):
             url,
             'apiKey=' + self.key,
             'nonce=' + str(nonce),
-            'depositAddress=' + str(deposit_address)
+            'depositAddress=' + str(deposit_address),
+            'primaryCurrencyCode=' + str(primary_currency_code)
         ]
 
         signature = self._generate_signature(parameters)
@@ -623,7 +624,8 @@ class PrivateMethods(Authentication):
             ("apiKey", self.key),
             ("nonce", nonce),
             ("signature", str(signature)),
-            ("depositAddress", str(deposit_address))
+            ("depositAddress", str(deposit_address)),
+            ("primaryCurrencyCode", str(primary_currency_code))
         ])
 
         response = requests.post(url, data=json.dumps(data, sort_keys=False), headers=self.headers)
