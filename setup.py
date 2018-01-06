@@ -15,7 +15,7 @@ setup(name="pyindependentreserve",
       author_email="melchisalins@gmail.com",
       license="MIT",
       packages=find_packages(),
-      install_requires=['requests==2.14.2'],
+      install_requires=['requests==2.18.4'],
       include_package_data=True,
       zip_safe=True,
       )

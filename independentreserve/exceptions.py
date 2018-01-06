@@ -1,6 +1,8 @@
-from requests.exceptions import HTTPError
 import logging
 
+
+class IRException(Exception):
+    pass
 
 def http_exception_handler(f):
     
@@ -22,14 +24,11 @@ def http_exception_handler(f):
     :return:
     """
     def wrapper(*args, **kwargs):
-        try:
-            response = f(*args, **kwargs)
-            response.raise_for_status()
-            return response.json()
-        except HTTPError as error:
-            log_error(error)
-        except Exception as error:
-            log_error(error)
+        response = f(*args, **kwargs)
+        if 400 == response.status_code:
+            raise IRException(response.reason)
+        response.raise_for_status()
+        return response.json()
             
     return wrapper
     
